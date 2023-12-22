@@ -76,7 +76,7 @@ class SbtApp(buildPackDesc:String,
           val startScript = (dir / "bin" ** "*").
             filter(!_.getName.endsWith(".bat")).
             filter(!_.getName.equals("bin")).
-            get(0).getName
+            get().head.getName
           if (scala.io.Source.fromFile(targetDir / "/universal/stage/bin" / startScript).mkString.contains("-main")) {
             Map[String, String](
               "web" -> ("target/universal/stage/bin/" + startScript + " -Dhttp.port=$PORT"),

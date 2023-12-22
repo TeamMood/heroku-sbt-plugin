@@ -6,7 +6,7 @@ organization := "com.heroku"
 
 sbtPlugin := true
 
-crossSbtVersions := Vector("0.13.18", "1.0.0")
+crossSbtVersions := Vector("1.9.7")
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
@@ -18,49 +18,8 @@ libraryDependencies ++= Seq(
   "com.heroku.sdk" % "heroku-deploy" % "2.0.16"
 )
 
-publishMavenStyle := false
+publishMavenStyle := true
 
-// Scripted
-scriptedSettings
-scriptedLaunchOpts += { "-Dproject.version=" + version.value }
-scriptedLaunchOpts := { scriptedLaunchOpts.value ++
-  Seq("-Xmx1024M", "-XX:MaxPermSize=256M",
-    "-Dheroku.uuid=" + java.util.UUID.randomUUID.toString.substring(0,15))
-}
+publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/TeamMood/adaptative-cards")
 
-// Bintray
-bintrayOrganization := Some("heroku")
-bintrayRepository := "sbt-plugins"
-bintrayPackage := "sbt-heroku"
-bintrayReleaseOnPublish := false
-
-// Git
-val tagName = Def.setting{
-  s"v${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}"
-}
-val tagOrHash = Def.setting{
-  if(isSnapshot.value)
-    sys.process.Process("git rev-parse HEAD").lines_!.head
-  else
-    tagName.value
-}
-
-releaseTagName := tagName.value
-
-// Release
-import ReleaseTransformations._
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  // releaseStepCommandAndRemaining("^ test"),
-  // releaseStepCommandAndRemaining("^ scripted"),
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("^ publishSigned"),
-  releaseStepTask(bintrayRelease in `sbt-heroku`),
-  setNextVersion,
-  commitNextVersion,
-  pushChanges
-)
+ThisBuild / versionScheme := Some("early-semver")
