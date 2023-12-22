@@ -12,8 +12,6 @@ licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 scalacOptions += "-deprecation"
 
-resolvers += Resolver.bintrayRepo("heroku", "maven")
-
 libraryDependencies ++= Seq(
   "com.heroku.sdk" % "heroku-deploy" % "2.0.16"
 )
