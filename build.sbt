@@ -20,6 +20,6 @@ libraryDependencies ++= Seq(
 
 publishMavenStyle := true
 
-publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/TeamMood/adaptative-cards")
+publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/TeamMood/heroku-sbt-plugin")
 
 ThisBuild / versionScheme := Some("early-semver")
